@@ -1,0 +1,27 @@
+{
+    "name": "Test Token TCP With Grok",
+    "type": "logevents",
+    "category": "Test",
+    "binding": {
+        "policy": "Bind_Collector",
+        "script": {
+            "ver": "JsonV1",
+            "code": {
+                "contains": [{
+                    "collectorAttr": "tags"
+                }, "tokenTcpWithGrokForLuglio"]
+            }
+        }
+    },
+    "collecting": {
+        "mechanism": "tokentcp",
+        "port": ["$collector.tokentcp.port", 8514],
+        "ssl": ["$collector.tokentcp.ssl", false]
+    },
+    "parsing": [{
+            "grok": ["$message", "%{MESSAGESLOG}"]
+        }, { 
+	    "$_host" : "logsource"
+        }
+    ]
+}
